@@ -1412,36 +1412,31 @@ const data = `#1 @ 151,671: 11x15
 // inches from left, inches from top
 // inches wide: inches tall
 
-let leftest = 0
-let topest = 0
-let widest = 0
-let tallest = 0
+// let leftest = 0
+// let topest = 0
+// let widest = 0
+// let tallest = 0
 
-const squares = data.split('\n').map(item => {
-  const [coords, area] = item.split(' ').slice(2)
-  const [left, top] = coords.slice(0, coords.length - 1).split(',')
-  const [wide, tall] = area.split('x')
+// const squares = data.split('\n').map(item => {
+//   const [coords, area] = item.split(' ').slice(2)
+//   const [left, top] = coords.slice(0, coords.length - 1).split(',')
+//   const [wide, tall] = area.split('x')
 
-  if (left > leftest) {
-    leftest = left
-  }
-  if (top > topest) {
-    topest = top
-  }
-  if (wide > widest) {
-    widest = wide
-  }
-  if (tall > tallest) {
-    tallest = tall
-  }
-})
+//   if (left > leftest) {
+//     leftest = left
+//   }
+//   if (top > topest) {
+//     topest = top
+//   }
+//   if (wide > widest) {
+//     widest = wide
+//   }
+//   if (tall > tallest) {
+//     tallest = tall
+//   }
+// })
 
-console.log(`Height: ${topest + tallest}`)
-console.log(`Width: ${leftest + widest}`)
+// console.log(`Height: ${topest + tallest}`)
+// console.log(`Width: ${leftest + widest}`)
 
-const grid = [...Array(1000)].map(() => {
-  return [...Array(1000).map(() => 'cat')]
-})
-// console.log(grid)
-console.log([...Array(1000)].map(() => 'cat'))
-// console.log(grid[0])
+const grid = [...Array(1000)].map(() => [...Array(1000)].map(() => ['-']))
