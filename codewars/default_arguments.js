@@ -13,3 +13,6 @@ function defaultArguments(func, params) {
   const subbed = args.map(arg => params[arg] || NaN)
   return (...args) => func(...subbed.map((arg, i) => args[i] || arg))
 }
+
+
+
