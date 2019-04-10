@@ -29,3 +29,10 @@ duration = 12
 print(findTimeslot(a, b, duration))
 
 # output: []
+
+a = [[60, 120]]
+b = [[59, 70]]
+duration = 8
+print(findTimeslot(a, b, duration))
+
+# output: [60, 68]
