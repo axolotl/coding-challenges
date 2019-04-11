@@ -151,9 +151,26 @@ class LeaderBoard {
   check_position(player) {
     // since we're only adding to the tail, we only need to worry about moving up the list
     while (player.prev && player.prev.average < player.average) {
-      // swap next and prev values
-      ;[player.prev.next, player.next] = [player.next, player.prev.next]
-      ;[player.prev.prev, player.prev] = [player.prev, player.prev.prev]
+      // console.log(`${player.prev.id} is less than ${player.id}`)
+      // move head and tail values (if applicable)
+      if (this.list.head == player.prev) {
+        this.list.head = player
+      }
+      if (this.list.tail == player) {
+        // this.list.tail == player.prev
+        this.list.tail = player.prev
+      }
+
+      // keep track of player.prev.prev for assigning to player.prev later
+      const temp_prev = player.prev.prev
+
+      // move player.next to the right
+      player.prev.next = player.next
+      player.prev.prev = player
+
+      // move player to the left
+      player.next = player.prev
+      player.prev = temp_prev
     }
   }
 
@@ -187,7 +204,7 @@ class LeaderBoard {
     // add to total score
     player.total_score += score
     // recalc average
-    player.average = player.scores.length / player.total_score
+    player.average = player.total_score / player.scores.length
 
     // make sure player is positioned properly in list
     this.check_position(player)
@@ -197,6 +214,7 @@ class LeaderBoard {
 
   reset(player_id) {
     if (this.players[player_id]) {
+      console.log(`resetting ${player_id}`)
       // get player
       const player = this.players[player_id]
       // reset all stats
@@ -211,16 +229,19 @@ class LeaderBoard {
   }
 
   top(num) {
+    // console.log(num)
     // array to store ids in
     const top_players = []
     // grab as many as per the parameter
     let current = this.list.head
     while (num > 0 && current) {
+      // console.log(current)
       top_players.push(current.id)
       current = current.next
-      num++
+      num--
     }
     // return top player ids
+    // console.log(top_players)
     return top_players
   }
 }
