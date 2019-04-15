@@ -10,23 +10,10 @@
 // ]
 // Output: 1->1->2->3->4->4->5->6
 
-function mergeKLists(lists) {
+function mergeTwoLists(lists) {
   // start new list
   let head
   let current
-
-  // start by filtering out empty
-  lists = lists.filter(item => !!item)
-
-  // check if all are empty
-  if (lists == null || lists.length == 0) {
-    return null
-  }
-
-  // if only one return that one
-  if (lists.length === 1) {
-    return lists[0]
-  }
 
   // loop until all lists are empty
   while (lists.length) {
@@ -62,6 +49,27 @@ function mergeKLists(lists) {
   }
 
   return head
+}
+
+function mergeKLists(lists) {
+  // start by filtering out empty
+  lists = lists.filter(item => !!item)
+
+  // check if all are empty
+  if (lists == null || lists.length == 0) {
+    return null
+  }
+
+  // if only one return that one
+  if (lists.length === 1) {
+    return lists[0]
+  }
+
+  while (lists.length > 1) {
+    lists = [mergeTwoLists([lists[0], lists[1]]), ...lists.slice(2)]
+  }
+
+  return lists[0]
 }
 
 class Node {
