@@ -24,11 +24,32 @@ const letter_numbers = [...Array(8)]
     }
   }, {})
 
-console.log(letter_numbers)
+function recursivelyGenerateCombos(digits, combinations, current) {
+  // base case
+  if (!digits) combinations.push(current)
+  // recurse
+  else {
+    for (let letter of letter_numbers[digits[0]]) {
+      recursivelyGenerateCombos(
+        digits.slice(1),
+        combinations,
+        `${current}${letter}`
+      )
+    }
+  }
+}
 
 function letterCombinations(digits) {
   // define combinations
   const combinations = []
+
+  // handle edge cases
+  if (!digits.length) return combinations
+
+  // recursively compute combinatione
+  recursivelyGenerateCombos(digits, combinations, '')
+
+  return combinations
 }
 
 console.log(letterCombinations('23')) // should print ["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"].
