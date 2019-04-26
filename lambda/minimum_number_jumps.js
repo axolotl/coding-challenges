@@ -48,7 +48,6 @@ function step(array, minimum, num_steps, pointer) {
 function calc_min_number_of_steps(array) {
   // store as object to allow passing into recursion as pointer not value
   let minimum = { value: null } // set this to null so we can apply boolean logic when we first give it a value
-  let min_jumps_per_item = Array(array.length).fill(0)
   let num_steps = 0 // start with taking 0 steps
   let pointer = 0 // start on the first element
 
@@ -86,15 +85,24 @@ function calc_backwards(array) {
   }
 
   // return smallest number of steps from the first location
-  console.log(min_steps)
   return min_steps[0]
 }
 
-let test_arr = [...Array(10)].map(() => Math.floor(Math.random() * 20) + 1)
-console.log(test_arr)
+let test_arr = [...Array(75)].map(() => Math.floor(Math.random() * 10) + 1)
+// console.log(test_arr)
 
-console.log(calc_min_number_of_steps(test_arr))
-console.log(counter_one)
+// test 1 (not-dynamic)
+let t0 = performance.now()
+calc_min_number_of_steps(test_arr)
+let t1 = performance.now()
 
-console.log(calc_backwards(test_arr))
-console.log(counter_two)
+console.log(`Test 1 took ${counter_one} steps`)
+console.log('Test 1 took ' + (t1 - t0) + ' milliseconds.')
+
+// test 2 (dynamic)
+let t2 = performance.now()
+calc_backwards(test_arr)
+let t3 = performance.now()
+
+console.log(`Test 2 took ${counter_two} steps`)
+console.log('Test 2 took ' + (t3 - t2) + ' milliseconds.')
