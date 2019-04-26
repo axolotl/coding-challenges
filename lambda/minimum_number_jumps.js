@@ -43,6 +43,7 @@ function step(array, minimum, num_steps, pointer) {
 function calc_min_number_of_steps(array) {
   // store as object to allow passing into recursion as pointer not value
   let minimum = { value: null } // set this to null so we can apply boolean logic when we first give it a value
+  let min_jumps_per_item = Array(array.length).fill(0)
   let num_steps = 0 // start with taking 0 steps
   let pointer = 0 // start on the first element
 
