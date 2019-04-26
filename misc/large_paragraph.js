@@ -16,7 +16,7 @@ for (let i = paragraph.length; i >= 0; i--) {
 
 let t1 = performance.now()
 
-console.log('Code took ' + (t1 - t0) + ' milliseconds.')
+console.log('Iterate backwards took ' + (t1 - t0) + ' milliseconds.')
 
 // --------------------------------- //
 
@@ -37,4 +37,4 @@ reversed = reversed.join('')
 
 let t4 = performance.now()
 
-console.log('Code took ' + (t4 - t3) + ' milliseconds.')
+console.log('Two pointers took ' + (t4 - t3) + ' milliseconds.')

@@ -19,7 +19,12 @@
 // to do this we'll keep track of the current minimum
 // we'll come back to dynamic programming to make the solution more efficient
 
+const { performance } = require('perf_hooks')
+
+let counter_one = 0
+
 function step(array, minimum, num_steps, pointer) {
+  counter_one++
   // define base case aka when we reach the end of the array
   if (pointer === array.length - 1) {
     // reset minumum if necessary
@@ -52,4 +57,44 @@ function calc_min_number_of_steps(array) {
   return minimum.value
 }
 
-console.log(calc_min_number_of_steps([1, 3, 5, 8, 9, 2, 6, 7, 6, 8, 9]))
+let counter_two = 0
+
+function calc_backwards(array) {
+  // store values for total number of steps to end for each item
+  let min_steps = Array(array.length).fill(Infinity)
+
+  // loop over array backwards to addatively caclulate remaining steps
+  for (let i = array.length - 1; i >= 0; i--) {
+    counter_two++
+    // initial case
+    if (i === array.length - 1) {
+      min_steps[i] = 0
+      continue
+    }
+
+    // for locations that current step can reach, calc smallest
+    let smallest = Infinity
+    for (let j = 1; j <= array[i]; j++) {
+      counter_two++
+
+      if (min_steps[i + j] < smallest) {
+        smallest = min_steps[i + j]
+      }
+    }
+    // set steps for currently considered location to smallest additional plus one
+    min_steps[i] = smallest + 1
+  }
+
+  // return smallest number of steps from the first location
+  console.log(min_steps)
+  return min_steps[0]
+}
+
+let test_arr = [...Array(10)].map(() => Math.floor(Math.random() * 20) + 1)
+console.log(test_arr)
+
+console.log(calc_min_number_of_steps(test_arr))
+console.log(counter_one)
+
+console.log(calc_backwards(test_arr))
+console.log(counter_two)
