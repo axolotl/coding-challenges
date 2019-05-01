@@ -59,50 +59,84 @@ function calc_min_number_of_steps(array) {
 let counter_two = 0
 
 function calc_backwards(array) {
-  // store values for total number of steps to end for each item
+  // null cases
+  if (!array.length || array[0] === 0) return Infinity
+
+  // keep track of known minimum number of steps from each location
   let min_steps = Array(array.length).fill(Infinity)
+  // set the last location to 0 steps since we're already there
+  min_steps[min_steps.length - 1] = 0
 
-  // loop over array backwards to addatively caclulate remaining steps
-  for (let i = array.length - 1; i >= 0; i--) {
+  // loop over array backwards, skipping the last item (since that's already known)
+  for (let i = array.length - 2; i >= 0; i--) {
     counter_two++
-    // initial case
-    if (i === array.length - 1) {
-      min_steps[i] = 0
-      continue
-    }
-
-    // for locations that current step can reach, calc smallest
+    // start by assuming it will take infinity steps from current location
     let smallest = Infinity
-    for (let j = 1; j <= array[i]; j++) {
-      counter_two++
 
+    // from all locations reachable from current location, find the smallest number of steps
+    for (let j = 1; j <= array[i] && j + i < array.length; j++) {
+      counter_two++
       if (min_steps[i + j] < smallest) {
         smallest = min_steps[i + j]
       }
     }
-    // set steps for currently considered location to smallest additional plus one
+    // set steps for current location to smallest plus one (for the one step to get to the location of smallest)
     min_steps[i] = smallest + 1
   }
 
-  // return smallest number of steps from the first location
+  // return number of steps from the first location
   return min_steps[0]
 }
 
-let test_arr = [...Array(75)].map(() => Math.floor(Math.random() * 10) + 1)
+let counter_three = 0
+
+function minJumps(arr, n = arr.length) {
+  const jumps = new Array(n)
+
+  if (n === 0 || arr[0] === 0) {
+    return Infinity
+  }
+
+  jumps[0] = 0
+
+  for (let i = 1; i < n; i++) {
+    counter_three++
+    jumps[i] = Infinity
+    for (let j = 0; j < i; j++) {
+      counter_three++
+      if (i <= j + arr[j] && jumps[j] !== Infinity) {
+        jumps[i] = Math.min(jumps[i], jumps[j] + 1)
+        break
+      }
+    }
+  }
+
+  return jumps[n - 1]
+}
+
+let test_arr = [...Array(10000)].map(() => Math.floor(Math.random() * 10) + 1)
 // console.log(test_arr)
 
 // test 1 (not-dynamic)
-let t0 = performance.now()
-calc_min_number_of_steps(test_arr)
-let t1 = performance.now()
+// let t0 = performance.now()
+// calc_min_number_of_steps(test_arr)
+// let t1 = performance.now()
 
-console.log(`Test 1 took ${counter_one} steps`)
-console.log('Test 1 took ' + (t1 - t0) + ' milliseconds.')
+// console.log(`Test 1 took ${counter_one} steps`)
+// console.log('Test 1 took ' + (t1 - t0) + ' milliseconds.')
 
 // test 2 (dynamic)
 let t2 = performance.now()
-calc_backwards(test_arr)
+console.log(calc_backwards(test_arr))
 let t3 = performance.now()
 
 console.log(`Test 2 took ${counter_two} steps`)
 console.log('Test 2 took ' + (t3 - t2) + ' milliseconds.')
+
+// testing against brady's solution
+let t4 = performance.now()
+console.log(minJumps(test_arr))
+let t5 = performance.now()
+
+console.log(`Test 3 took ${counter_three} steps`)
+console.log('Test 3 took ' + (t5 - t4) + ' milliseconds.')
