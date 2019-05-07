@@ -24,4 +24,14 @@
 //   [3,5]
 // ]
 
+/*
+Solution: 
+
+try as many of largest as possible
+then for each version try as many of the next as possible
+then next step
+
+
+*/
+
 function combinationSum(candidates, target) {}
