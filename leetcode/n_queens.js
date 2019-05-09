@@ -31,18 +31,39 @@ whenever all rows have gotten placements, add to solutions
 
 function calcRow(board, rowIndex, rowsRemaining, solutions) {
   if (rowsRemaining === 0) {
+    board = board.map(row =>
+      row
+        .map(square => (square === 'x' || square === ' ' ? '.' : square))
+        .join('')
+    )
     solutions.push(board)
-  }
-  for (let i = 0; i < board[rowIndex].length - 1; i++) {
-    if (board[rowIndex][i] !== 'x') {
-      newBoard = board.map(row => row.slice()) // make copy of board
-      newBoard[rowIndex][i] = 'Q'
-      // cross out squares looking downward
-      for (let j = rowIndex + 1; j < newBoard.length; j++) {
-        newBoard[j][i] = 'x'
+  } else {
+    for (let i = 0; i < board[rowIndex].length; i++) {
+      if (board[rowIndex][i] !== 'x') {
+        newBoard = board.map(row => row.slice()) // make copy of board
+        newBoard[rowIndex][i] = 'Q'
+        // cross out squares looking downward
+        for (let j = rowIndex + 1; j < newBoard.length; j++) {
+          newBoard[j][i] = 'x'
+        }
+        // cross out squares looking rightward
+        for (
+          let j = rowIndex + 1, k = i + 1;
+          j < newBoard.length && k < newBoard.length;
+          j++, k++
+        ) {
+          newBoard[j][k] = 'x'
+        }
+        // cross out squares looking leftward
+        for (
+          let j = rowIndex + 1, k = i - 1;
+          j < newBoard.length && k >= 0;
+          j++, k--
+        ) {
+          newBoard[j][k] = 'x'
+        }
+        calcRow(newBoard, rowIndex + 1, rowsRemaining - 1, solutions)
       }
-      // cross out squares looking rightward
-      for (let j = rowIndex)
     }
   }
 }
@@ -50,7 +71,8 @@ function calcRow(board, rowIndex, rowsRemaining, solutions) {
 function solveNQueens(n) {
   const solutions = []
   const startingBoard = Array(n).fill(Array(n).fill(' '))
-  calcRow(startingBoard, 0, 4, solutions)
+  calcRow(startingBoard, 0, n, solutions)
+  return solutions
 }
 
 console.log(solveNQueens(4))
